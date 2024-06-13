@@ -1,11 +1,12 @@
-from nomad.datamodel import EntryArchive
-
-from nomad_batteries import ExampleSection
+from nomad_batteries import BatteryApp
+from nomad_batteries.main import generate_archives
 
 from . import LOGGER
 
 
-def test_dummy():
-    schema = ExampleSection(name='World')
-    schema.normalize(EntryArchive(), LOGGER)
-    assert schema.message == 'Hello World!'
+def test_resolve_ocv():
+    battery_app = BatteryApp()
+    archives = generate_archives(logger=LOGGER)
+    battery_app.resolve_ocv(archives=archives, logger=LOGGER)
+    assert True
+    # add assertions here to check if `battery_app.open_circuit_voltage` is correct
