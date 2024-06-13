@@ -1,21 +1,27 @@
-from nomad.datamodel.data import EntryData
-from nomad.datamodel.metainfo.annotations import ELNAnnotation, ELNComponentEnum
+import numpy as np
+from typing import List
+from structlog.stdlib import (
+    BoundLogger,
+)
+
+from nomad.datamodel import EntryArchive
+from nomad.datamodel.data import ArchiveSection
 from nomad.metainfo import Package, Quantity
+
 
 m_package = Package()
 
 
-class ExampleSection(EntryData):
-    name = Quantity(
-        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+class BatteryApp(ArchiveSection):
+    open_circuit_voltage = Quantity(
+        type=np.float64, description='Open circuit voltage of the battery'
     )
-    message = Quantity(type=str)
 
-    def normalize(self, archive, logger):
-        super().normalize(archive, logger)
-        logger.info('ExampleSection.normalize called')
-
-        self.message = f'Hello {self.name}!'
+    def resolve_ocv(self, archives: List[EntryArchive], logger: BoundLogger):
+        scf_archive = archives[0]
+        deleted_atom_1_archive = archives[1]
+        # add here the operations to resolve and assign `self.open_circuit_voltage` using the needed archives
+        # ...
 
 
 m_package.__init_metainfo__()
