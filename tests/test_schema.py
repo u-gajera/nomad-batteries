@@ -1,11 +1,11 @@
 from nomad.datamodel import EntryArchive
 
-from nomad_batteries import ExampleSection
+from nomad_batteries import BatteriesSchema
+from pydantic import BaseModel, Field
+from nomad.metainfo import Quantity
 
-from . import LOGGER
 
-
-def test_dummy():
-    schema = ExampleSection()
+class BatteryNormalizer(self):
+    schema = BatteriesSchema()
     schema.normalize(EntryArchive(), LOGGER)
     assert True
